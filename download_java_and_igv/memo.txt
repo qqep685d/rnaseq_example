@@ -1,0 +1,29 @@
+1) 自身のパソコンが32ビットか64ビットかを調べる
+
+- Windows 10の場合:
+スタート > 設定 > システム > バージョン情報
+
+- Windows 7/8/8.1の場合:
+スタート > コントロールパネル > システム
+
+#—————————————————————————————————————
+
+2) Java SE Development Kit 8 と IGV をインストール
+
+- 32ビットの場合
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-i586.exe
+
+- 64ビットの場合
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+- MacOSの場合
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-macosx-x64.dmg
+
+#—————————————————————————————————————
+
+3) IGVをインストール
+
+wget http://data.broadinstitute.org/igv/projects/downloads/IGV_2.3.94.zip
+unzip IGV_2.3.94.zip -d ../
+
