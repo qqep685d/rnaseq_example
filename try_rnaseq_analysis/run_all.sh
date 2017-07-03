@@ -69,7 +69,7 @@ cuffmerge --ref-sequence ${ref_fasta} -o "${cuffmerge_out}" "${cufflinks_out}/gt
 
 # II-3. 統合GTFファイルを元に、発現量を計算（cuffquant）
 for i in "sample_01" "sample_02";do
-    cuffquant　-o "${cuffquant_out}/${i}" "${cuffmerge_out}/merged.gtf" "${bwt_out}/${i}.sorted.bam"
+    cuffquant -o "${cuffquant_out}/${i}" "${cuffmerge_out}/merged.gtf" "${bwt_out}/${i}.sorted.bam"
 done
 
 # II-4. 発現比較（cuffdiff）
