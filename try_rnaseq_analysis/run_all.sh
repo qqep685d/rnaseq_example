@@ -42,11 +42,7 @@ for i in "sample_01" "sample_02";do
     # Bowtieアウトプットディレクトリを作成
     mkdir -p "${bwt_out}"
     # Bowtie実行
-    bowtie2 \
-        -x "${ref_index}" \
-        -1 "${reads_dir}/${i}_1.fastq.gz" \
-        -2 "${reads_dir}/${i}_2.fastq.gz" \
-        -S "${bwt_out}/${i}.sam"
+    bowtie2 -x "${ref_index}" -1 "${reads_dir}/${i}_1.fastq.gz" -2 "${reads_dir}/${i}_2.fastq.gz" -S "${bwt_out}/${i}.sam"
 
     # I-3. アライメント結果のフォーマット変換（samtools view）
     samtools view -bS "${bwt_out}/${i}.sam" > "${bwt_out}/${i}.bam"
@@ -61,9 +57,7 @@ for i in "sample_01" "sample_02";do
     samtools faidx "${ref_fasta}"
 
     # II-1. アライメント結果からGTFファイルを取得（cufflinks）
-    cufflinks -L ${i} \
-        -o "${cufflinks_out}/${i}" \
-        "${bwt_out}/${i}.sorted.bam"
+    cufflinks -L ${i} -o "${cufflinks_out}/${i}" "${bwt_out}/${i}.sorted.bam"
 
     # GTFファイルリストの作成（II-2で使用）
     ls "${cufflinks_out}/${i}/transcripts.gtf" >> "${cufflinks_out}/gtflist.txt"
@@ -71,21 +65,12 @@ for i in "sample_01" "sample_02";do
 done
 
 # II-2. 複数のGTFファイルを統合（cuffmerge）
-cuffmerge \
-    --ref-sequence ${ref_fasta} \
-    -o "${cuffmerge_out}" "${cufflinks_out}/gtflist.txt"
+cuffmerge --ref-sequence ${ref_fasta} -o "${cuffmerge_out}" "${cufflinks_out}/gtflist.txt"
 
 # II-3. 統合GTFファイルを元に、発現量を計算（cuffquant）
 for i in "sample_01" "sample_02";do
-    cuffquant \
-        -o "${cuffquant_out}/${i}" \
-        "${cuffmerge_out}/merged.gtf" \
-        "${bwt_out}/${i}.sorted.bam"
+    cuffquant　-o "${cuffquant_out}/${i}" "${cuffmerge_out}/merged.gtf" "${bwt_out}/${i}.sorted.bam"
 done
 
 # II-4. 発現比較（cuffdiff）
-cuffdiff -o "${cuffdiff_out}" \
-    -L red_perilla,green_perilla \
-    "${cuffmerge_out}/merged.gtf" \
-    "${cuffquant_out}/sample_01/abundances.cxb" \
-    "${cuffquant_out}/sample_02/abundances.cxb"
+cuffdiff -o "${cuffdiff_out}" -L red_perilla,green_perilla "${cuffmerge_out}/merged.gtf" "${cuffquant_out}/sample_01/abundances.cxb" "${cuffquant_out}/sample_02/abundances.cxb"
